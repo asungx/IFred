@@ -1,0 +1,12 @@
+services:
+  dev:
+    build:
+      context: .
+    volumes:
+      - type: bind
+        source: .
+        target: /mnt/IFred
+    working_dir: /mnt/IFred
+    stdin_open: true
+    tty: true
+    command: "/bin/bash"
