@@ -1,6 +1,8 @@
 #include <iostream>
 
-int main (int argc, char *argv[])
+#include "xeus/xkernel.hpp"
+
+int main ()
 {
     std::cout << "Hello world" << std::endl;
     return 0;

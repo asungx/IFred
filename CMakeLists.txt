@@ -37,6 +37,32 @@ set( ENTRY_POINT
 )
 
 #------------------------------------------------------------------------------
+# Dependencies
+
+# Get conda directory
+execute_process(
+    COMMAND bash -c "whereis conda"
+    OUTPUT_VARIABLE CONDA_HOME
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+string( REGEX MATCH "^conda: (.+)\/bin\/conda$"
+    MATCHED
+    ${CONDA_HOME}
+)
+if (MATCHED)
+    set( CONDA_HOME ${CMAKE_MATCH_1} )
+else()
+    message( FATAL_ERROR "Cannot find conda directory" )
+endif()
+
+# Set libuuid variables
+set( LibUUID_LIBRARY     ${CONDA_HOME}/lib/libuuid.a )
+set( LibUUID_INCLUDE_DIR ${CONDA_HOME}/include/uuid )
+
+set( XEUS_REQUIRED_VERSION 2.4.1 )
+find_package( xeus ${XEUS_REQUIRED_VERSION} REQUIRED )
+
+#------------------------------------------------------------------------------
 # Defining executables and libraries
 add_library( ${PROJECT_LIB} STATIC
     ${HEADERS}
@@ -52,4 +78,6 @@ add_executable( ${PROJECT_NAME}
 
 target_link_libraries( ${PROJECT_NAME} PRIVATE
     ${PROJECT_LIB}
+    "xeus-static"
 )
+

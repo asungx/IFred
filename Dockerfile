@@ -31,6 +31,13 @@ ARG CONDA_URL_TARGET="https://repo.anaconda.com/miniconda/${CONDA_FILE}"
 RUN curl -sL ${CONDA_URL_TARGET} --output /tmp/${CONDA_FILE} && \
     bash /tmp/${CONDA_FILE} -b
 
-RUN conda install -y --channel=conda-forge xeus
+RUN conda install -y --channel=conda-forge xeus=2.4.1 \
+    OpenSSL \
+    cppzmq \
+    libuuid \
+    nlohmann_json \
+    pkg-config \
+    xtl \
+    zeromq
 
 CMD sleep infinity
