@@ -40,6 +40,7 @@ set( ENTRY_POINT
 # Dependencies
 
 # Get conda directory
+# Note: This does NOT work if conda is also soft-linked in the user's PATH
 execute_process(
     COMMAND bash -c "whereis conda"
     OUTPUT_VARIABLE CONDA_HOME
@@ -59,8 +60,21 @@ endif()
 set( LibUUID_LIBRARY     ${CONDA_HOME}/lib/libuuid.a )
 set( LibUUID_INCLUDE_DIR ${CONDA_HOME}/include/uuid )
 
+# Include xeus library
 set( XEUS_REQUIRED_VERSION 2.4.1 )
 find_package( xeus ${XEUS_REQUIRED_VERSION} REQUIRED )
+
+# Load FetchContent module
+include( FetchContent )
+
+# CLI11 - command line parser library
+# Version: 2.2
+FetchContent_Declare(
+  Cli11
+  GIT_REPOSITORY https://github.com/CLIUtils/CLI11
+  GIT_TAG b9be5b9444772324459989177108a6a65b8b2769
+)
+FetchContent_MakeAvailable( Cli11 )
 
 #------------------------------------------------------------------------------
 # Defining executables and libraries
@@ -78,6 +92,7 @@ add_executable( ${PROJECT_NAME}
 
 target_link_libraries( ${PROJECT_NAME} PRIVATE
     ${PROJECT_LIB}
-    "xeus-static"
+    CLI11::CLI11
+    xeus-static
 )
 
