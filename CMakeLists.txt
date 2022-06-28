@@ -70,14 +70,45 @@ include( FetchContent )
 # CLI11 - command line parser library
 # Version: 2.2
 FetchContent_Declare(
-  Cli11
-  GIT_REPOSITORY https://github.com/CLIUtils/CLI11
-  GIT_TAG b9be5b9444772324459989177108a6a65b8b2769
+    CLI11
+    GIT_REPOSITORY https://github.com/CLIUtils/CLI11
+    GIT_TAG b9be5b9444772324459989177108a6a65b8b2769
 )
-FetchContent_MakeAvailable( Cli11 )
+
+# spdlog - logging library
+# Version: 1.10.0
+FetchContent_Declare(
+    spdlog
+    GIT_REPOSITORY https://github.com/gabime/spdlog
+    GIT_TAG 76fb40d95455f249bd70824ecfcae7a8f0930fa3
+)
+
+# fmt - formatting library
+# Version: 8.1.1
+FetchContent_Declare(
+    fmt
+    GIT_REPOSITORY https://github.com/fmtlib/fmt
+    GIT_TAG b6f4ceaed0a0a24ccf575fab6c56dd50ccf6f1a9
+)
+
+# Fetch nlohmann/json
+# Version: 3.10.5
+FetchContent_Declare (
+    nlohmann_json
+    GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent.git
+    GIT_TAG 6aebf09233951e4ce30a63919186a70b2b195756
+)
+
+FetchContent_MakeAvailable(
+    CLI11
+    fmt
+    nlohmann_json
+    spdlog
+)
 
 #------------------------------------------------------------------------------
 # Defining executables and libraries
+
 add_library( ${PROJECT_LIB} STATIC
     ${HEADERS}
     ${SOURCE_FILES}
@@ -88,11 +119,25 @@ add_executable( ${PROJECT_NAME}
 )
 
 #------------------------------------------------------------------------------
+# Headers
+
+target_include_directories( ${PROJECT_NAME} PRIVATE
+    source/interpreter
+)
+
+#------------------------------------------------------------------------------
 # Linking
+
+target_link_libraries( ${PROJECT_LIB} PRIVATE
+    nlohmann_json::nlohmann_json
+    xeus-static
+)
 
 target_link_libraries( ${PROJECT_NAME} PRIVATE
     ${PROJECT_LIB}
     CLI11::CLI11
+    fmt::fmt
+    spdlog::spdlog
     xeus-static
 )
 
