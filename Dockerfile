@@ -34,10 +34,12 @@ RUN curl -sL ${CONDA_URL_TARGET} --output /tmp/${CONDA_FILE} && \
 RUN conda install -y --channel=conda-forge xeus=2.4.1 \
     OpenSSL \
     cppzmq \
+    ipykernel \
+    jupyterlab \
     libuuid \
     nlohmann_json \
     pkg-config \
     xtl \
     zeromq
 
-CMD sleep infinity
+CMD echo "Container is sleeping..." && sleep infinity

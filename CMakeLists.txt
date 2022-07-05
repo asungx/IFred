@@ -141,3 +141,41 @@ target_link_libraries( ${PROJECT_NAME} PRIVATE
     xeus-static
 )
 
+# Add paths to linker search and installed rpath
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    INSTALL_RPATH_USE_LINK_PATH TRUE
+)
+
+#------------------------------------------------------------------------------
+# Configuration
+
+# Provide install directory variables as defined by the GNU Coding Standards:
+# https://www.gnu.org/prep/standards/html_node/Directory-Variables.html
+include( GNUInstallDirs )
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/config/kernel.json.in
+    ${CMAKE_CURRENT_BINARY_DIR}/share/jupyter/kernels/${PROJECT_NAME}/kernel.json
+)
+
+#------------------------------------------------------------------------------
+# Installation
+
+# Install kernel
+install(
+    TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+# Configuration and data directories for jupyter and kernel
+set(
+    XJUPYTER_DATA_DIR share/jupyter
+    CACHE STRING "Jupyter data directory"
+)
+
+# Install Jupyter kernelspecs
+set( KERNELSPEC_DIR ${CMAKE_CURRENT_BINARY_DIR}/share/jupyter/kernels )
+install(
+    DIRECTORY   ${KERNELSPEC_DIR}
+    DESTINATION ${XJUPYTER_DATA_DIR}
+    PATTERN "*.in" EXCLUDE
+)
