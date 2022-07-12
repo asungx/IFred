@@ -1,0 +1,9 @@
+{
+    "display_name": "IFred",
+    "argv": [
+        "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/${PROJECT_NAME}",
+        "-f",
+        "{connection_file}"
+    ],
+    "language": "fred"
+}

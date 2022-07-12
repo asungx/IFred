@@ -9,4 +9,5 @@ services:
     working_dir: /mnt/IFred
     stdin_open: true
     tty: true
+    network_mode: host
     command: "/bin/bash"
